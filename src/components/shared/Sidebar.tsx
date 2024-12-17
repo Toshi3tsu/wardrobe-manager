@@ -73,7 +73,7 @@ const Sidebar: React.FC = () => {
       <select value={linkSource} onChange={(e) => setLinkSource(e.target.value)}>
         <option value="">-- 出発点を選択 --</option>
         {clothes.map((item) => (
-          <option key={item.id} value={item.name}>
+          <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}
@@ -81,7 +81,7 @@ const Sidebar: React.FC = () => {
       <select value={linkTarget} onChange={(e) => setLinkTarget(e.target.value)}>
         <option value="">-- 終点を選択 --</option>
         {clothes.map((item) => (
-          <option key={item.id} value={item.name}>
+          <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}

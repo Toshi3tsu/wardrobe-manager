@@ -30,7 +30,7 @@ interface WardrobeState {
   removeClothing: (id: string) => void;        // 服を削除
   addOutfit: (outfit: Outfit) => void;         // コーディネート追加
   addLink: (source: string, target: string) => void; // 服同士をリンク
-  setSelectedClothing: (id: string) => void;   // 服を選択
+  setSelectedClothing: (item: ClothingItem | null) => void;   // 服を選択
   loadFromStorage: () => void;                 // ローカルストレージから読み込み
 }
 
@@ -86,6 +86,11 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => {
     },
 
     addLink: (source, target) => {
+      const existingClothing = get().clothes.map((item) => item.id);
+      if (!existingClothing.includes(source) || !existingClothing.includes(target)) {
+        console.error("リンク作成エラー: 指定されたノードIDが存在しません。");
+        return;
+      }
       set((state) => {
         const updatedLinks = [...state.links, { source, target }];
         saveToStorage();
@@ -93,10 +98,9 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => {
       });
     },
 
-    setSelectedClothing: (id) => {
-      const clothing = get().clothes.find((c) => c.id === id) || null;
-      set({ selectedClothing: clothing });
-    },
+    setSelectedClothing: (item: ClothingItem | null) => {
+      set({ selectedClothing: item });
+    },    
 
     loadFromStorage,
   };
